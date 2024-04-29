@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>All Tracked Habits</h1>
+    {% if all_habits_details %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Periodicity</th>
+                    <th>Completion Count</th>
+                    <th>Longest Streak</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for habit in all_habits_details %}
+                <tr>
+                    <td>{{ habit.name }}</td>
+                    <td>{{ habit.description }}</td>
+                    <td>{{ habit.periodicity }}</td>
+                    <td>{{ habit.completions_count }}</td>
+                    <td>{{ habit.longest_streak }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No habits tracked yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

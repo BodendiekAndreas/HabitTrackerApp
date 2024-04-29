@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h2>Sign Up</h2>
+        <p>Fill in the form below to create an account.</p>
+        <form action="{{ url_for('auth.register') }}" method="post">
+            {{ form.hidden_tag() }}
+            {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.password2) }}
+            <div class="form-group">
+                {{ form.submit(class_="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

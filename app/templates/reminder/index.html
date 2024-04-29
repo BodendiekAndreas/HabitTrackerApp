@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="my-4">Reminders</h2>
+    <a href="{{ url_for('reminder.add_reminder') }}" class="btn btn-primary mb-4">Add New Reminder</a>
+    <ul class="list-group">
+      {% for reminder in reminders %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ reminder.message }}</strong>
+            <br/>
+            Habit: {{ reminder.habit.name }} <!-- Display the corresponding habit -->
+            <br/>
+            Scheduled for: {{ reminder.date.strftime('%Y-%m-%d') }} <!-- Display the date -->
+          </div>
+          <div class="btn-group">
+            <a href="{{ url_for('reminder.edit_reminder', reminder_id=reminder.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+            <form action="{{ url_for('reminder.delete_reminder', reminder_id=reminder.id) }}" method="post">
+              <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this reminder?')">Delete</button>
+            </form>
+          </div>
+        </li>
+      {% else %}
+        <li class="list-group-item">No reminders set up yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
+

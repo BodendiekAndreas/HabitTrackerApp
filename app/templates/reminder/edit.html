@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+  <h2>Edit Reminder</h2>
+  <form action="{{ url_for('reminder.edit_reminder', reminder_id=reminder.id) }}" method="post">
+    <!-- CSRF token for security -->
+    {{ form.hidden_tag() }}
+
+    <!-- Message field -->
+    <div class="form-group">
+      {{ form.message.label(class_="form-control-label") }}
+      {{ form.message(class_="form-control", value=reminder.message) }}
+      {% if form.message.errors %}
+        <div class="alert alert-danger">
+          {% for error in form.message.errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Time field -->
+    <div class="form-group">
+      {{ form.time.label(class_="form-control-label") }}
+      {{ form.time(class_="form-control", value=reminder.time | timeformat) }}
+      {% if form.time.errors %}
+        <div class="alert alert-danger">
+          {% for error in form.time.errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Update button -->
+    <button type="submit" class="btn btn-primary">Update Reminder</button>
+  </form>
+{% endblock %}

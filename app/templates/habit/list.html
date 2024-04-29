@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+
+{% block title %}My Habits{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>My Habits</h2>
+    <a href="{{ url_for('habit.add_habit') }}" class="btn btn-primary mb-3">Add New Habit</a>
+    {% if habits_data %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Periodicity</th>
+                <th scope="col">Times Completed</th> <!-- Added an extra column here -->
+                <th scope="col">Completed</th>
+                <th scope="col">Calendar</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in habits_data %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ item.habit.name }}</td>
+                    <td>{{ item.habit.periodicity }}</td>
+                    <td>{{ item.completions_count }}</td> <!-- Displaying the count here -->
+                    <td>
+                        <form method="POST" action="{{ url_for('habit.mark_completed', habit_id=item.habit.id) }}" style="display:inline">
+                            <input type="submit" class="btn btn-sm {{ 'btn-success' if item.habit.completed else 'btn-primary' }}" value="{{ 'Completed' if item.habit.completed else 'Mark as completed' }}">
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('habit.habit_calendar', habit_id=item.habit.id) }}" class="btn btn-sm btn-info">Calendar</a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('habit.edit_habit', habit_id=item.habit.id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                        <form action="{{ url_for('habit.delete_habit', habit_id=item.habit.id) }}" method="POST" style="display:inline">
+                            <input type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no habits tracked yet. Start by adding a new habit.</p>
+    {% endif %}
+</div>
+{% endblock %}

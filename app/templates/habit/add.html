@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block title %}Add Habit{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom_styles.css') }}">
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add New Habit</h2>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h4 class="card-title">Custom Habit</h4>
+                    <form method="POST">
+                        {{ custom_habit_form.hidden_tag() }}
+                        {{ render_field(custom_habit_form.name) }}
+                        {{ render_field(custom_habit_form.description) }}
+                        {{ render_field(custom_habit_form.periodicity) }}
+                        <button type="submit" class="btn btn-primary w-100">Add Custom Habit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h4 class="card-title">Predefined Habit</h4>
+                    <form method="POST">
+                        {{ predefined_habit_form.hidden_tag() }}
+                        {{ render_field(predefined_habit_form.predefined_habit_name) }}
+                        <button type="submit" class="btn btn-secondary w-100">Add Predefined Habit</button>
+                    </form>
+                    {% if DEFAULT_HABITS %}
+                        <div class="table-responsive mt-3">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Periodicity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for habit in DEFAULT_HABITS %}
+                                        <tr>
+                                            <td>{{ habit[0] }}</td>  <!-- Habit's name -->
+                                            <td>{{ habit[2] }}</td>  <!-- Habit's description -->
+                                            <td>{{ habit[1] }}</td>  <!-- Habit's periodicity -->
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

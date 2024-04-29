@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+
+{% block title %}Edit Habit{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Habit</h2>
+    <form action="{{ url_for('habit.edit_habit', habit_id=habit.id) }}" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {{ form.name.label }} {{ form.name(class="form-control", value=habit.name) }}
+        {{ form.description.label }} {{ form.description(class="form-control", value=habit.description) }}
+        {{ form.periodicity.label }} {{ form.periodicity(class="form-select", value=habit.periodicity) }}
+        <button type="submit" class="btn btn-primary">Update Habit</button>
+    </form>
+</div>
+{% endblock %}

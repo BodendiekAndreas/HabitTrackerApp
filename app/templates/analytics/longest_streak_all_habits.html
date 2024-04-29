@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Longest Streak of All Tracked Habits</h1>
+    {% if habits and longest_streak > 0 %}
+        <h3>The longest streak is {{ longest_streak }} days, shared by the following habits:</h3>
+        {% for habit in habits %}
+            <div class="card mt-2">
+                <div class="card-body">
+                    <h5 class="card-title">Habit: {{ habit.name }}</h5>
+                    <p class="card-text">Description: {{ habit.description }}</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Periodicity: {{ habit.periodicity }}</li>
+                        <li class="list-group-item">Completion Count: {{ get_completions_count(habit.id) }}</li>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No habits found or no streaks to display.</p>
+    {% endif %}
+</div>
+{% endblock %}

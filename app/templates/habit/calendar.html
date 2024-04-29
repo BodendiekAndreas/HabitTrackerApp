@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_day %}
+
+{% block content %}
+<h1>Calendar for {{ habit.name }} - {{ current_month }}</h1>
+<a href="{{ url_for('habit.habit_calendar', habit_id=habit.id, year=prev_month.year, month=prev_month.month) }}" class="btn btn-sm btn-info">Previous Month</a>
+<a href="{{ url_for('habit.habit_calendar', habit_id=habit.id, year=next_month.year, month=next_month.month) }}" class="btn btn-sm btn-info">Next Month</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if days %}
+            {% set day_num = days[0][1] %}
+            <tr>
+            {% for i in range(day_num) %}
+                <td></td>
+            {% endfor %}
+
+            {% for day, weekday, completed in days %}
+                {% set current_date = datetime(year, month, day) %}
+                {% set days_since_created = (current_date - habit.created_at).days %}
+
+                {% if (day_num + loop.index0) % 7 == 0 and loop.index0 != 0 %}
+                    </tr><tr>
+                {% endif %}
+                {% if current_date > datetime.now() %}
+                    {{ render_day(day, 'future') }}
+                {% else %}
+                    {% if habit.periodicity == 'weekly' and days_since_created % 7 == 6 %}
+                    {% if habit.is_in_current_period %}
+                    {{ render_day(day, 'completed') }}
+                {% else %}
+                    {{ render_day(day, 'broken') }}
+        {% endif %}
+                    {% elif habit.periodicity == 'weekly' %}
+                    {% if habit.is_in_current_period %}
+                    {{ render_day(day, 'completed') }}
+        {% else %}
+            {{ render_day(day) }}
+        {% endif %}
+                    {% elif habit.periodicity == 'daily' or days_since_created % 7 != 6 %}
+                        {% if completed %}
+                            {{ render_day(day, 'completed') }}
+                        {% else %}
+                            {{ render_day(day, 'broken') }}
+                        {% endif %}
+                    {% else %}
+                    {{ render_day(day, None) }}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% set end_padding = (7 - ((day_num + days|length) % 7)) % 7 %}
+            {% for _ in range(end_padding) %}
+                <td></td>
+            {% endfor %}
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

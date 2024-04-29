@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+  <h2>Delete Reminder</h2>
+  <p>Are you sure you want to delete the reminder "{{ reminder.message }}" scheduled for {{ reminder.time }}?</p>
+
+  <form action="{{ url_for('reminder.delete_reminder', reminder_id=reminder.id) }}" method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{{ url_for('reminder.index') }}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

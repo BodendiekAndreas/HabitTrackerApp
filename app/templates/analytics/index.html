@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Analytics Dashboard</h1>
+    <div class="row">
+        <!-- Card for All Tracked Habits -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">All Tracked Habits</h5>
+                    <p class="card-text">View a list of all habits you are currently tracking.</p>
+                    <a href="{{ url_for('analytics.all_habits') }}" class="btn btn-primary">View Habits</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card for Habits by Periodicity -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Habits by Periodicity</h5>
+                    <p class="card-text">Analyze habits based on their periodicity (daily, weekly).</p>
+                    <a href="{{ url_for('analytics.habits_by_periodicity') }}" class="btn btn-primary">View by Periodicity</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card for Longest Streak of All Habits -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Longest Streak</h5>
+                    <p class="card-text">Discover the habit with the longest continuous streak.</p>
+                    <a href="{{ url_for('analytics.longest_streak_all_habits') }}" class="btn btn-primary">View Longest Streak</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card for Selecting Habit for Streak Analysis -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Streak Analysis</h5>
+                    <p class="card-text">Select a specific habit to analyze its longest streak.</p>
+                    <a href="{{ url_for('analytics.select_habit_for_streak') }}" class="btn btn-primary">Analyze Streak</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<div class="main-content">
+  <div class="jumbotron">
+    <h1 class="display-4">Welcome to your Habit Tracker App!</h1>
+    <p class="lead">This application helps you track and maintain your daily and weekly habits.</p>
+    <hr class="my-4">
+    <p class="lead">
+      {% if not current_user.is_authenticated %}
+      <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Register</a>
+      <a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
+      {% else %}
+      <a class="btn btn-success btn-lg" href="{{ url_for('habit.index') }}" role="button">My Habits</a>
+      <a class="btn btn-info btn-lg" href="{{ url_for('reminder.index') }}" role="button">My Reminders</a>
+      <a class="btn btn-warning btn-lg" href="{{ url_for('analytics.index') }}" role="button">My Analytics</a>
+      {% endif %}
+    </p>
+  </div>
+  {% if current_user.is_authenticated %}
+  <div class="reminders">
+    <h2>Reminders for Today</h2>
+    {% if not reminders %}
+      <p>No reminders for today!</p>
+    {% else %}
+      {% for reminder in reminders %}
+        <div class="reminder">
+          <p>{{ reminder.message }} - <small>Related to Habit: <strong>{{ reminder.habit.name }}</strong></small></p>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

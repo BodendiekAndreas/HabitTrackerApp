@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Filter Habits by Periodicity</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.periodicity.label(class="form-control-label") }}
+            {{ form.periodicity(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    {% if habits_details %}
+    <h2>Habits by {{ periodicity.title() }}</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Periodicity</th>
+                    <th>Completion Count</th>
+                    <th>Longest Streak</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for habit in habits_details %}
+                <tr>
+                    <td>{{ habit.name }}</td>
+                    <td>{{ habit.description }}</td>
+                    <td>{{ habit.periodicity }}</td>
+                    <td>{{ habit.completions_count }}</td>
+                    <td>{{ habit.longest_streak }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No habits found for the selected periodicity.</p>
+    {% endif %}
+</div>
+{% endblock %}

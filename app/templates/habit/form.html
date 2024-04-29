@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+
+{% block title %}Add New Habit{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Add New Habit</h2>
+    <form action="{{ url_for('habit.add_habit') }}" method="post" novalidate>
+        {{ custom_habit_form.csrf_token }}
+        {{ render_field(custom_habit_form.name) }}
+        {{ render_field(custom_habit_form.description) }}
+        {{ render_field(custom_habit_form.periodicity) }}
+        <button type="submit" class="btn btn-primary">Add Habit</button>
+    </form>
+
+    <h2>or choose from default habits</h2>
+    <form action="{{ url_for('habit.add_habit') }}" method="post" novalidate>
+        {{ predefined_habit_form.csrf_token }}
+        <div class="form-group">
+        {{ predefined_habit_form.predefined_habit_name.label(class="form-label") }} {{ predefined_habit_form.predefined_habit_name(class="form-select") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Add Selected Habit</button>
+    </form>
+</div>
+{% endblock %}
