@@ -10,9 +10,9 @@ from faker import Faker
 def test_app():
     app = create_app('testing')
     with app.app_context():
-        db.create_all() # Ensure all tables are created.
-        yield app # this will be where the testing happens.
-        db.drop_all() # Drop database tables after tests.
+        db.create_all()  # Ensure all tables are created.
+        yield app  # this will be where the testing happens.
+        db.drop_all()  # Drop database tables after tests.
 
 
 # Function to create a new user.
@@ -115,3 +115,28 @@ def test_mark_completed(test_client, test_app, habit_created):
     with test_app.app_context():
         completion_count = Completion.query.filter_by(habit_id=habit_id).count()
         assert completion_count == 1
+
+
+# This fixture will add 28 completions to a habit
+@pytest.fixture(scope='function')
+def habit_with_completions(test_app, habit_created):
+    from datetime import timedelta, date
+
+    # with each iteration, a date in the past 28 days is set as completion date for a habit
+    for i in range(1, 29):
+        completion_date = date.today() - timedelta(days=i)
+        completion = Completion(completed_at=completion_date, habit_id=habit_created.id)
+        db.session.add(completion)
+
+    db.session.commit()
+
+    return habit_created
+
+
+# Then, a new test case to test habit completions
+def test_habit_completions(test_client, test_app, habit_with_completions):
+    habit_id = habit_with_completions.id
+    with test_app.app_context():
+        completion_count = Completion.query.filter_by(habit_id=habit_id).count()
+        assert completion_count == 28  # assert that 28 completions have been created
+
